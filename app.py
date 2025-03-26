@@ -20,7 +20,7 @@ creds = ServiceAccountCredentials.from_json_keyfile_name(temp_json.name, scope)
 client = gspread.authorize(creds)
 
 # Abre la hoja de Google
-sheet = client.open("anunciatext_clientes").worksheet("Hoja 1")
+sheet = client.open_by_key("1F_6PuLxM7EH9xkG0rtnyzvDqak--97-4ENs7A0sevwM").worksheet("Hoja 1")
 
 st.set_page_config(page_title="Anunciatext", layout="centered")
 st.title("📲 Regístrate para recibir promociones")
