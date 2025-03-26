@@ -8,9 +8,12 @@ import tempfile
 # Autenticación con Google Sheets desde secrets
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
-# Crear archivo temporal desde secrets
+# Convertir el secrets object a dict
+secrets_dict = {k: v for k, v in st.secrets["gcp_service_account"].items()}
+
+# Crear archivo temporal con el dict
 temp_json = tempfile.NamedTemporaryFile(delete=False, suffix=".json")
-temp_json.write(json.dumps(st.secrets["gcp_service_account"]).encode())
+temp_json.write(json.dumps(secrets_dict).encode())
 temp_json.close()
 
 creds = ServiceAccountCredentials.from_json_keyfile_name(temp_json.name, scope)
