@@ -2,12 +2,18 @@ import streamlit as st
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
+import json
+import tempfile
 
-# Autenticación con Google Sheets
+# Autenticación con Google Sheets desde secrets
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
-# Carga las credenciales desde el archivo secreto
-creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+# Crear archivo temporal desde secrets
+temp_json = tempfile.NamedTemporaryFile(delete=False, suffix=".json")
+temp_json.write(json.dumps(st.secrets["gcp_service_account"]).encode())
+temp_json.close()
+
+creds = ServiceAccountCredentials.from_json_keyfile_name(temp_json.name, scope)
 client = gspread.authorize(creds)
 
 # Abre la hoja de Google
